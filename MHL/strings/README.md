@@ -27,8 +27,8 @@ Keep this directory in your workspace, as we'll use it later. Next, we'll open t
   <img src="assets/app-init.png" alt="App initialization" width="180"/>
   <br>
   <em>Figure 1: App initialization</em>
+  <em></em>
 </div>
-
 
 As we can see, the application is indicating that it's using native code (Hello from C++). With this in mind, we'll see two native libraries in `decompiled/lib/x86_64`, **libchallenge.so** and **libflag.so**, those are ELF shared objects that can be analyzed using some decompiler, in our case, **Rizin**.
 
@@ -42,8 +42,8 @@ However, we'll first see the application classes using jadx, this with the goal 
   <img src="assets/jadx-manifest.png" alt="AndroidManifest.xml analysis in jadx"/>
   <br>
   <em>Figure 2: AndroidManifest.xml analysis in jadx</em>
+  <em></em>
 </div>
-
 
 In the Android manifest we see two activities, `MainActivity` and `Activity2`, both can be exported, which means we could **launch** the activity. First, we'll see the `MainActivity` (**Navigation > Go to main Activity**):
 
@@ -51,8 +51,8 @@ In the Android manifest we see two activities, `MainActivity` and `Activity2`, b
   <img src="assets/jadx-main.png" alt="MainActivity analysis in jadx"/>
   <br>
   <em>Figure 3: MainActivity analysis in jadx</em>
+  <em></em>
 </div>
-
 
 There is a behavior easy to understand, the app simply loads **libchallenge.so** library, then, use a native function called `stringFromJNI` and show its result. Let's see this function using **Rizin**:
 
@@ -183,8 +183,8 @@ Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.L
   <img src="assets/app-activity2.png" alt="Executing activity2" width="180"/>
   <br>
   <em>Figure 5: Executing activity2</em>
+  <em></em>
 </div>
-
 
 It's doing well, the application is showing us the string returned by `getflag` function, which is "success". Apparently, `getflag` doesn't return the flag. Let's see the challenge hints.
 
