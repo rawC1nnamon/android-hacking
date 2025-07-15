@@ -5,8 +5,6 @@
 > **Device:** [redroid/redroid:13.0.0-latest](https://github.com/remote-android/redroid-doc).  
 > **Tools:** adb, frida, jadx, rizin.
 
----
-
 ## Overview
 
 After installing the apk, we'll unzip it to get a general overview of its structure:
@@ -31,6 +29,7 @@ Keep this directory in your workspace, as we'll use it later. Next, we'll open t
   <em>Figure 1: App initialization</em>
 </div>
 
+
 As we can see, the application is indicating that it's using native code (Hello from C++). With this in mind, we'll see two native libraries in `decompiled/lib/x86_64`, **libchallenge.so** and **libflag.so**, those are ELF shared objects that can be analyzed using some decompiler, in our case, **Rizin**.
 
 However, we'll first see the application classes using jadx, this with the goal of understanding the application behavior.
@@ -45,6 +44,7 @@ However, we'll first see the application classes using jadx, this with the goal 
   <em>Figure 2: AndroidManifest.xml analysis in jadx</em>
 </div>
 
+
 In the Android manifest we see two activities, `MainActivity` and `Activity2`, both can be exported, which means we could **launch** the activity. First, we'll see the `MainActivity` (**Navigation > Go to main Activity**):
 
 <div align="center">
@@ -52,6 +52,7 @@ In the Android manifest we see two activities, `MainActivity` and `Activity2`, b
   <br>
   <em>Figure 3: MainActivity analysis in jadx</em>
 </div>
+
 
 There is a behavior easy to understand, the app simply loads **libchallenge.so** library, then, use a native function called `stringFromJNI` and show its result. Let's see this function using **Rizin**:
 
@@ -99,8 +100,6 @@ undefined8 sym.Java_com_mobilehackinglab_challenge_MainActivity_stringFromJNI(in
 
 Apparently, this function print "Hello from C++", that is the string we see on the app. However, we don't see a reference to `Activity2` in the main activity, therefore, we'll see its behavior and check if its useful.
 
----
-
 ## Starting an activity
 
 Clicking `com.mobilehackinglab.challenge.Activity2` in the Android manifest, jadx will redirect us to `Activity2` class:
@@ -110,6 +109,7 @@ Clicking `com.mobilehackinglab.challenge.Activity2` in the Android manifest, jad
   <br>
   <em>Figure 4: Activity2 analysis in jadx</em>
 </div>
+
 
 This activity load **libflag.so** and call a native function called `getflag` as long as some conditions were met. The first two conditions, `isActionView` and `isU1Matching`, the first one verify if the activity is called with the `VIEW` action intent, the second one verify an special shared preference. The latter doesn't matter, cause we could hook `Intrinsics.areEqual` with **Frida** to always return true.
 
@@ -184,6 +184,7 @@ Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.L
   <br>
   <em>Figure 5: Executing activity2</em>
 </div>
+
 
 It's doing well, the application is showing us the string returned by `getflag` function, which is "success". Apparently, `getflag` doesn't return the flag. Let's see the challenge hints.
 
