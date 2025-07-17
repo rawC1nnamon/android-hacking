@@ -10,6 +10,7 @@ This repository contains my write-ups for android hacking labs from different re
 ## Index
 * [Mobile Hacking Labs](https://www.mobilehackinglab.com/free-mobile-hacking-labs)
      - [strings](https://rawc1nnamon.github.io/blog/write-ups-english/strings/): Exported activity exploitation.
+     - [config-editor](https://rawc1nnamon.github.io/blog/write-ups-english/config-editor/): **SnakeYAML** CVE-2022-1471 PoC.
 
 ## Disclaimer
 The content describe in this repository is just for educational purposes, I won't take responsibility for any misuse of these resources.
